@@ -38,7 +38,7 @@ while IFS= read -r f; do SOURCES+=("$f"); done < <(find Sources/Islet -name '*.s
 BINARIES=()
 for arch in $ARCHS; do
   echo "→ compiling $arch"
-  swiftc "${VFS_FLAGS[@]}" -parse-as-library -swift-version 5 -O -whole-module-optimization \
+  swiftc ${VFS_FLAGS[@]+"${VFS_FLAGS[@]}"} -parse-as-library -swift-version 5 -O -whole-module-optimization \
     -target "$arch-apple-macos$MIN_MACOS" \
     "${SOURCES[@]}" -o "$BUILD/Islet-$arch"
   BINARIES+=("$BUILD/Islet-$arch")

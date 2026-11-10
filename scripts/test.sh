@@ -38,7 +38,7 @@ SOURCES=()
 while IFS= read -r f; do SOURCES+=("$f"); done < <(find Sources/Islet -name '*.swift' ! -name 'Main.swift' | sort)
 while IFS= read -r f; do SOURCES+=("$f"); done < <(find Tests/IsletTests -name '*.swift' | sort)
 
-swiftc "${VFS_FLAGS[@]}" -parse-as-library -swift-version 5 -Onone -D ISLET_LOCAL_TESTS \
+swiftc ${VFS_FLAGS[@]+"${VFS_FLAGS[@]}"} -parse-as-library -swift-version 5 -Onone -D ISLET_LOCAL_TESTS \
   -target "$(uname -m)-apple-macos14.0" -module-name IsletLocalTests \
   -F "$FW" -framework Testing -Xlinker -rpath -Xlinker "$FW" \
   "${SOURCES[@]}" "$BUILD/Runner.swift" -o "$BUILD/run-tests"
