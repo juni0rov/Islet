@@ -315,6 +315,25 @@ private struct DisplaySettings: View {
             Text(language.t("display.note"))
                 .font(.caption).foregroundStyle(.secondary)
                 .fixedSize(horizontal: false, vertical: true)
+
+            Divider().padding(.vertical, 4)
+            Text(language.t("fit.title")).font(.headline)
+            Text(language.t("fit.hint"))
+                .font(.caption).foregroundStyle(.secondary)
+                .fixedSize(horizontal: false, vertical: true)
+            FitSlider(title: language.t("fit.width"), value: $model.fitWidth)
+            FitSlider(title: language.t("fit.height"), value: $model.fitHeight)
+            HStack {
+                Button(language.t("fit.reset")) {
+                    withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) {
+                        model.fitWidth = AppModel.defaultFit
+                        model.fitHeight = AppModel.defaultFit
+                    }
+                }
+                if model.placementMode != .notch {
+                    Text(language.t("fit.noNotch")).font(.caption).foregroundStyle(.secondary)
+                }
+            }
         }
         .onAppear { screens = DisplayGeometryProvider.snapshots() }
         .onReceive(NotificationCenter.default.publisher(for: NSApplication.didChangeScreenParametersNotification)) { _ in
@@ -335,6 +354,40 @@ private struct DisplaySettings: View {
         if model.islandHidden { return "eye.slash" }
         if case .confirmed = model.classification { return "macbook" }
         return "capsule"
+    }
+}
+
+/// Slider in 0.5 pt steps (one physical pixel on Retina) with − / + buttons
+/// for exact nudging.
+private struct FitSlider: View {
+    let title: String
+    @Binding var value: Double
+    @EnvironmentObject var language: LanguageStore
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            HStack {
+                Text(title)
+                Spacer()
+                Text(verbatim: value.formatted(.number.precision(.fractionLength(1)).locale(language.locale)) + " pt")
+                    .monospacedDigit().foregroundStyle(.secondary)
+            }
+            HStack(spacing: 8) {
+                Button { nudge(-0.5) } label: { Image(systemName: "minus") }
+                    .accessibilityLabel(Text(verbatim: "−0.5"))
+                Slider(value: Binding(get: { value }, set: { value = ($0 * 2).rounded() / 2 }),
+                       in: AppModel.fitRange)
+                    .accessibilityLabel(Text(title))
+                Button { nudge(0.5) } label: { Image(systemName: "plus") }
+                    .accessibilityLabel(Text(verbatim: "+0.5"))
+            }
+            .buttonStyle(.bordered)
+        }
+        .frame(maxWidth: 420)
+    }
+
+    private func nudge(_ d: Double) {
+        value = min(max(value + d, AppModel.fitRange.lowerBound), AppModel.fitRange.upperBound)
     }
 }
 

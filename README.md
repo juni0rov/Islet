@@ -25,7 +25,7 @@
 
 | | |
 |---|---|
-| **Grows out of the notch** | On a MacBook with a notch the island is a black pill that starts at the very top edge and wraps around the camera. Small "wings" on either side show the time, the weather and a little cat. On displays without a notch it floats as a glass capsule. |
+| **Grows out of the notch** | On a MacBook with a notch the island is a black pill that starts at the very top edge and wraps around the camera. Small "wings" on either side show the time, the weather and a little cat. On displays without a notch it floats as a glass capsule. If a thin strip of the notch shows on your Mac, adjust the fit in *Settings → Display → Fit to the notch* (0.5 pt steps, changes live). |
 | **Hover → open, click → pin** | Hover over the island and it opens with a spring animation. Move the pointer away and it closes. A click pins it open. Esc, the ⌃ button or a click anywhere else closes it. |
 | **Now Playing** | Spotify and Apple Music: artwork, progress you can drag, volume, and previous / play-pause / next. While music plays, the bottom edge of the island ripples and the bars in the wing move. |
 | **Live activities** | Small pop-ups grow out of the island: *Copied*, *Put on the shelf*, new song, timer finished, colour picked. |

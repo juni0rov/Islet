@@ -52,6 +52,8 @@ enum DebugTools {
                    to: url.appendingPathComponent("settings.png"))
             render(SettingsView(startTab: .behavior).environmentObject(model), model: model, size: CGSize(width: 720, height: 640),
                    to: url.appendingPathComponent("settings-behavior.png"))
+            render(SettingsView(startTab: .display).environmentObject(model), model: model, size: CGSize(width: 720, height: 620),
+                   to: url.appendingPathComponent("settings-display.png"))
             render(SettingsView(startTab: .behavior, sidebar: false).environmentObject(model), model: model,
                    size: CGSize(width: 720, height: 300), to: url.appendingPathComponent("settings-nosidebar.png"))
             render(HStack(spacing: 14) {

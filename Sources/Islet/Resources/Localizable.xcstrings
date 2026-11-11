@@ -1064,6 +1064,114 @@
         }
       }
     },
+    "fit.height": {
+      "comment": "Slider",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Extra height"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Запас по высоте"
+          }
+        }
+      }
+    },
+    "fit.hint": {
+      "comment": "Hint",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "If a thin strip of the notch shows around the island, make it a little wider or taller. The island changes live; 0.5 pt is one pixel."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Если вокруг островка видна тонкая полоска чёлки, сделайте его чуть шире или выше. Островок меняется сразу; 0,5 pt — это один пиксель."
+          }
+        }
+      }
+    },
+    "fit.noNotch": {
+      "comment": "Note",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This screen has no notch, so these settings don't apply here."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "У этого экрана нет чёлки — настройки здесь не действуют."
+          }
+        }
+      }
+    },
+    "fit.reset": {
+      "comment": "Button",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reset"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Сбросить"
+          }
+        }
+      }
+    },
+    "fit.title": {
+      "comment": "Section header: fitting the island to the notch",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fit to the notch"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Подгонка под чёлку"
+          }
+        }
+      }
+    },
+    "fit.width": {
+      "comment": "Slider",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Extra width on each side"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Запас по ширине с каждой стороны"
+          }
+        }
+      }
+    },
     "language.note": {
       "comment": "Language hint",
       "extractionState": "manual",

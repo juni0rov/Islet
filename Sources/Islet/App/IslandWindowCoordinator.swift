@@ -102,6 +102,11 @@ final class IslandWindowCoordinator {
             .sink { [weak self] _ in self?.scheduleRelayout() }
             .store(in: &bag)
 
+        // Fit sliders change the band height, and with it the panel size.
+        model.$fitHeight.dropFirst().removeDuplicates()
+            .sink { [weak self] _ in DispatchQueue.main.async { self?.relayout() } }
+            .store(in: &bag)
+
         let app = NotificationCenter.default
         add(app, NSApplication.didChangeScreenParametersNotification) { [weak self] in self?.screensChanged() }
         add(app, NSApplication.didBecomeActiveNotification) { [weak self] in self?.scheduleRelayout() }

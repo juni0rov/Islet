@@ -51,6 +51,10 @@ final class AppModel: ObservableObject {
     static let toastsKey = "islet.toasts"
     static let timeKey = "islet.wing.time"
     static let mascotKindKey = "islet.mascot.kind"
+    static let fitWidthKey = "islet.fit.width"
+    static let fitHeightKey = "islet.fit.height"
+    /// Default overlap of the camera housing, in points.
+    static let defaultFit: Double = 2
     static let temperatureKey = "islet.wing.temperature"
 
     let defaults: UserDefaults
@@ -91,6 +95,15 @@ final class AppModel: ObservableObject {
     @Published var showMascot: Bool {
         didSet { defaults.set(showMascot, forKey: Self.mascotKey) }
     }
+    /// How far the island reaches past the camera housing on each side and
+    /// below it (points; 0.5 pt = 1 pixel on Retina). User-adjustable,
+    /// because notches differ slightly between MacBook models.
+    @Published var fitWidth: Double {
+        didSet { defaults.set(fitWidth, forKey: Self.fitWidthKey) }
+    }
+    @Published var fitHeight: Double {
+        didSet { defaults.set(fitHeight, forKey: Self.fitHeightKey) }
+    }
     /// Which character lives next to the notch.
     @Published var mascot: MascotKind {
         didSet { defaults.set(mascot.rawValue, forKey: Self.mascotKindKey) }
@@ -124,6 +137,8 @@ final class AppModel: ObservableObject {
             Self.mascotKey: true,
             Self.toastsKey: true,
             Self.timeKey: true,
+            Self.fitWidthKey: Self.defaultFit,
+            Self.fitHeightKey: Self.defaultFit,
             Self.temperatureKey: true
         ])
         language = LanguageStore(defaults: defaults)
@@ -134,6 +149,8 @@ final class AppModel: ObservableObject {
         showMascot = defaults.bool(forKey: Self.mascotKey)
         showToasts = defaults.bool(forKey: Self.toastsKey)
         showTime = defaults.bool(forKey: Self.timeKey)
+        fitWidth = defaults.double(forKey: Self.fitWidthKey)
+        fitHeight = defaults.double(forKey: Self.fitHeightKey)
         mascot = MascotKind(rawValue: defaults.string(forKey: Self.mascotKindKey) ?? "") ?? .cat
         showTemperature = defaults.bool(forKey: Self.temperatureKey)
         preferredDisplayID = UInt32(clamping: defaults.integer(forKey: Self.displayKey))
@@ -191,9 +208,7 @@ final class AppModel: ObservableObject {
 
     /// Flared top corners of the notch shape (they sit outside the body).
     static let earRadius: CGFloat = 10
-    /// The island overlaps the camera housing by this much on each side so
-    /// no sliver of the hardware edge peeks out.
-    static let notchOverscan: CGFloat = 2
+    static let fitRange: ClosedRange<Double> = -4...20
 
     /// What the idle wings show, given the toggles and available data.
     var idleTemperature: String? { showTemperature ? weather.temperatureText : nil }
@@ -218,12 +233,12 @@ final class AppModel: ObservableObject {
     /// Height of the top band: exactly the camera housing in notch mode, so
     /// the island adapts to whatever notch this Mac has.
     var bandHeight: CGFloat {
-        placementMode == .notch ? max(notchSize.height + Self.notchOverscan, 24) : 34
+        placementMode == .notch ? max(notchSize.height + CGFloat(fitHeight), 20) : 34
     }
 
     var compactSize: CGSize {
         if placementMode == .notch {
-            return CGSize(width: notchSize.width + 2 * (wingWidth + Self.notchOverscan + Self.earRadius), height: bandHeight)
+            return CGSize(width: max(40, notchSize.width + 2 * (wingWidth + CGFloat(fitWidth) + Self.earRadius)), height: bandHeight)
         }
         return CGSize(width: 250, height: 36)
     }
