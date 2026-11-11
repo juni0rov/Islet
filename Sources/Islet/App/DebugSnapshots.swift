@@ -50,6 +50,16 @@ enum DebugTools {
             }
             render(SettingsView().environmentObject(model), model: model, size: CGSize(width: 720, height: 520),
                    to: url.appendingPathComponent("settings.png"))
+            render(SettingsView(startTab: .behavior).environmentObject(model), model: model, size: CGSize(width: 720, height: 640),
+                   to: url.appendingPathComponent("settings-behavior.png"))
+            render(SettingsView(startTab: .behavior, sidebar: false).environmentObject(model), model: model,
+                   size: CGSize(width: 720, height: 300), to: url.appendingPathComponent("settings-nosidebar.png"))
+            render(HStack(spacing: 14) {
+                ForEach(MascotKind.allCases) { k in MascotView(size: 44, kind: k, interactive: false) }
+            }
+            .padding(18)
+            .background(RoundedRectangle(cornerRadius: 18).fill(Color.black)),
+                   model: model, size: CGSize(width: 560, height: 100), to: url.appendingPathComponent("mascots.png"))
             print("snapshots written to \(url.path)")
             NSApp.terminate(nil)
         }

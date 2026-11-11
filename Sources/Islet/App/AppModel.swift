@@ -50,6 +50,7 @@ final class AppModel: ObservableObject {
     static let mascotKey = "islet.mascot"
     static let toastsKey = "islet.toasts"
     static let timeKey = "islet.wing.time"
+    static let mascotKindKey = "islet.mascot.kind"
     static let temperatureKey = "islet.wing.temperature"
 
     let defaults: UserDefaults
@@ -90,6 +91,10 @@ final class AppModel: ObservableObject {
     @Published var showMascot: Bool {
         didSet { defaults.set(showMascot, forKey: Self.mascotKey) }
     }
+    /// Which character lives next to the notch.
+    @Published var mascot: MascotKind {
+        didSet { defaults.set(mascot.rawValue, forKey: Self.mascotKindKey) }
+    }
     /// Wing contents, each optional.
     @Published var showTime: Bool {
         didSet { defaults.set(showTime, forKey: Self.timeKey) }
@@ -129,6 +134,7 @@ final class AppModel: ObservableObject {
         showMascot = defaults.bool(forKey: Self.mascotKey)
         showToasts = defaults.bool(forKey: Self.toastsKey)
         showTime = defaults.bool(forKey: Self.timeKey)
+        mascot = MascotKind(rawValue: defaults.string(forKey: Self.mascotKindKey) ?? "") ?? .cat
         showTemperature = defaults.bool(forKey: Self.temperatureKey)
         preferredDisplayID = UInt32(clamping: defaults.integer(forKey: Self.displayKey))
         interaction.previewEnabled = previewEnabled
@@ -187,7 +193,7 @@ final class AppModel: ObservableObject {
     static let earRadius: CGFloat = 10
     /// The island overlaps the camera housing by this much on each side so
     /// no sliver of the hardware edge peeks out.
-    static let notchOverscan: CGFloat = 1
+    static let notchOverscan: CGFloat = 2
 
     /// What the idle wings show, given the toggles and available data.
     var idleTemperature: String? { showTemperature ? weather.temperatureText : nil }

@@ -441,13 +441,31 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Cat"
+            "value": "Character"
           }
         },
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Котик"
+            "value": "Персонаж"
+          }
+        }
+      }
+    },
+    "behavior.mascotPick": {
+      "comment": "Label above the character picker",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Who lives by the notch"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Кто живёт у чёлки"
           }
         }
       }
@@ -1082,6 +1100,150 @@
         }
       }
     },
+    "mascot.bear": {
+      "comment": "Character",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bear"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Мишка"
+          }
+        }
+      }
+    },
+    "mascot.bunny": {
+      "comment": "Character",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bunny"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Зайка"
+          }
+        }
+      }
+    },
+    "mascot.cat": {
+      "comment": "Character",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cat"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Котик"
+          }
+        }
+      }
+    },
+    "mascot.dog": {
+      "comment": "Character",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dog"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Пёсик"
+          }
+        }
+      }
+    },
+    "mascot.fox": {
+      "comment": "Character",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fox"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Лисичка"
+          }
+        }
+      }
+    },
+    "mascot.frog": {
+      "comment": "Character",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Frog"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Лягушка"
+          }
+        }
+      }
+    },
+    "mascot.panda": {
+      "comment": "Character",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Panda"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Панда"
+          }
+        }
+      }
+    },
+    "mascot.penguin": {
+      "comment": "Character",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Penguin"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Пингвин"
+          }
+        }
+      }
+    },
     "media.hint": {
       "comment": "Empty state detail",
       "extractionState": "manual",
@@ -1618,6 +1780,24 @@
           "stringUnit": {
             "state": "translated",
             "value": "Язык"
+          }
+        }
+      }
+    },
+    "settings.sidebar": {
+      "comment": "Button: show/hide the settings sidebar",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Toggle sidebar"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Показать или скрыть боковую панель"
           }
         }
       }

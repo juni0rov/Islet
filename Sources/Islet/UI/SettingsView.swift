@@ -18,15 +18,74 @@ struct SettingsView: View {
         }
     }
 
-    @State private var tab: Tab = .appearance
+    @State private var tab: Tab
+    @State private var sidebarVisible: Bool
+
+    init(startTab: Tab = .appearance, sidebar: Bool = true) {
+        _tab = State(initialValue: startTab)
+        _sidebarVisible = State(initialValue: sidebar)
+    }
+    @EnvironmentObject var a11y: AccessibilityState
+
+    private var motion: Animation { a11y.spring(0.42, damping: 0.86) }
 
     var body: some View {
-        NavigationSplitView {
-            List(Tab.allCases, selection: $tab) { t in
-                Label(language.t("settings.\(t.rawValue)"), systemImage: t.symbol).tag(t)
+        HStack(spacing: 0) {
+            if sidebarVisible {
+                sidebar
+                    .frame(width: 210)
+                    .transition(.move(edge: .leading).combined(with: .opacity))
+                Divider().transition(.opacity)
             }
-            .navigationSplitViewColumnWidth(min: 170, ideal: 190)
-        } detail: {
+            detail
+        }
+        .overlay(alignment: .topLeading) {
+            // Sits next to the traffic lights and never moves, like Finder's.
+            Button {
+                withAnimation(motion) { sidebarVisible.toggle() }
+            } label: {
+                Image(systemName: "sidebar.leading")
+                    .font(.system(size: 14, weight: .medium))
+                    .frame(width: 30, height: 26)
+                    .contentShape(Rectangle())
+            }
+            .buttonStyle(SidebarToggleStyle())
+            .help(language.t("settings.sidebar"))
+            .accessibilityLabel(Text(language.t("settings.sidebar")))
+            .padding(.leading, 82)
+            .padding(.top, 7)
+        }
+        .frame(minWidth: 560, minHeight: 460)
+        .ignoresSafeArea(.container, edges: .top)
+        .environment(\.layoutDirection, language.layoutDirection)
+        .environment(\.locale, language.locale)
+    }
+
+    private var sidebar: some View {
+        VStack(alignment: .leading, spacing: 2) {
+            ForEach(Tab.allCases) { t in
+                SidebarRow(title: language.t("settings.\(t.rawValue)"), symbol: t.symbol, selected: tab == t) {
+                    withAnimation(motion) { tab = t }
+                }
+            }
+            Spacer()
+        }
+        .padding(.horizontal, 10)
+        .padding(.top, 50)
+        .frame(maxHeight: .infinity)
+        .background(VisualEffectBlur(material: .sidebar).ignoresSafeArea())
+    }
+
+    private var detail: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            Text(language.t("settings.\(tab.rawValue)"))
+                .font(.system(size: 20, weight: .semibold))
+                .padding(.leading, sidebarVisible ? 24 : 124)
+                .frame(height: 40)
+                .padding(.top, 2)
+                .id("title-\(tab.rawValue)")
+                .transition(.opacity)
+            Divider()
             ScrollView {
                 Group {
                     switch tab {
@@ -39,12 +98,58 @@ struct SettingsView: View {
                 }
                 .padding(24)
                 .frame(maxWidth: .infinity, alignment: .leading)
+                .id(tab)
+                .transition(.opacity.combined(with: .offset(y: 6)))
             }
-            .navigationTitle(language.t("settings.\(tab.rawValue)"))
         }
-        .frame(minWidth: 640, minHeight: 460)
-        .environment(\.layoutDirection, language.layoutDirection)
-        .environment(\.locale, language.locale)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Color(nsColor: .windowBackgroundColor))
+    }
+}
+
+private struct SidebarRow: View {
+    let title: String
+    let symbol: String
+    let selected: Bool
+    let action: () -> Void
+    @State private var hover = false
+
+    var body: some View {
+        Button(action: action) {
+            HStack(spacing: 10) {
+                Image(systemName: symbol).frame(width: 20)
+                Text(title).lineLimit(1)
+                Spacer(minLength: 0)
+            }
+            .font(.system(size: 13.5))
+            .padding(.horizontal, 10)
+            .frame(height: 32)
+            .background(RoundedRectangle(cornerRadius: 8, style: .continuous)
+                .fill(Color.primary.opacity(selected ? 0.12 : (hover ? 0.06 : 0))))
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .onHover { h in withAnimation(.easeOut(duration: 0.12)) { hover = h } }
+        .accessibilityAddTraits(selected ? .isSelected : [])
+    }
+}
+
+private struct SidebarToggleStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        SidebarToggleBody(configuration: configuration)
+    }
+}
+
+private struct SidebarToggleBody: View {
+    let configuration: ButtonStyleConfiguration
+    @State private var hover = false
+
+    var body: some View {
+        configuration.label
+            .foregroundStyle(.secondary)
+            .background(RoundedRectangle(cornerRadius: 6, style: .continuous)
+                .fill(Color.primary.opacity(configuration.isPressed ? 0.14 : (hover ? 0.08 : 0))))
+            .onHover { hover = $0 }
     }
 }
 
@@ -236,6 +341,7 @@ private struct DisplaySettings: View {
 // MARK: Behavior
 
 private struct BehaviorSettings: View {
+    @EnvironmentObject var a11y: AccessibilityState
     @EnvironmentObject var model: AppModel
     @EnvironmentObject var language: LanguageStore
     @EnvironmentObject var weather: WeatherService
@@ -254,6 +360,17 @@ private struct BehaviorSettings: View {
             Toggle(language.t("behavior.splash"), isOn: $model.showSplash).toggleStyle(.switch)
             Text(language.t("behavior.wings")).font(.headline)
             Toggle(language.t("behavior.mascot"), isOn: $model.showMascot).toggleStyle(.switch)
+            if model.showMascot {
+                Text(language.t("behavior.mascotPick")).font(.subheadline).foregroundStyle(.secondary)
+                LazyVGrid(columns: Array(repeating: GridItem(.fixed(64), spacing: 8), count: 4), alignment: .leading, spacing: 8) {
+                    ForEach(MascotKind.allCases) { kind in
+                        MascotChoice(kind: kind, selected: model.mascot == kind) {
+                            withAnimation(a11y.spring(0.35, damping: 0.7)) { model.mascot = kind }
+                        }
+                    }
+                }
+                .transition(.opacity.combined(with: .move(edge: .top)))
+            }
             Toggle(language.t("behavior.time"), isOn: $model.showTime).toggleStyle(.switch)
             Toggle(language.t("behavior.temperature"), isOn: $model.showTemperature).toggleStyle(.switch)
             Text(language.t("behavior.wingsHint")).font(.caption).foregroundStyle(.secondary)
@@ -277,6 +394,34 @@ private struct BehaviorSettings: View {
                 .foregroundStyle(.secondary)
         }
         .onAppear { cityDraft = weather.city }
+    }
+}
+
+private struct MascotChoice: View {
+    let kind: MascotKind
+    let selected: Bool
+    let action: () -> Void
+    @EnvironmentObject var language: LanguageStore
+    @State private var hover = false
+
+    var body: some View {
+        Button(action: action) {
+            VStack(spacing: 4) {
+                MascotView(size: 30, kind: kind, interactive: false)
+                    .frame(width: 56, height: 44)
+                    .background(RoundedRectangle(cornerRadius: 12, style: .continuous).fill(Color.black))
+                    .overlay(RoundedRectangle(cornerRadius: 12, style: .continuous)
+                        .strokeBorder(Color.accentColor, lineWidth: selected ? 2.5 : 0))
+                    .scaleEffect(selected ? 1.06 : (hover ? 1.03 : 1))
+                Text(language.t(kind.titleKey)).font(.caption).lineLimit(1)
+            }
+            .frame(width: 64)
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .onHover { h in withAnimation(.easeOut(duration: 0.12)) { hover = h } }
+        .accessibilityLabel(Text(language.t(kind.titleKey)))
+        .accessibilityAddTraits(selected ? .isSelected : [])
     }
 }
 
@@ -315,11 +460,15 @@ final class SettingsWindowController {
                 .environmentObject(model.theme)
                 .environmentObject(model.accessibility)
                 .environmentObject(model.weather)
+                .environmentObject(model.cursor)
+                .environmentObject(model.media)
             let w = NSWindow(contentRect: NSRect(x: 0, y: 0, width: 720, height: 520),
                              styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
                              backing: .buffered, defer: false)
             w.contentView = NSHostingView(rootView: view)
             w.isReleasedWhenClosed = false
+            w.titlebarAppearsTransparent = true
+            w.titleVisibility = .hidden
             w.center()
             window = w
         }

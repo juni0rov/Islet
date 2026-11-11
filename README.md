@@ -36,12 +36,13 @@
 | **Notes & timer** | A notepad that keeps its text, plus a timer with a progress ring and presets. |
 | **Weather** | Now, the next hours and the week, from Open-Meteo. No API key and no location permission: only the city name you set is sent. |
 | **Command bar ⌥Space** | One line for everything: open apps, do maths (`2400*15%`), start a timer (`timer 10`, `таймер 10`) or search the web. |
-| **Character** | A cat in the left wing follows your cursor, blinks, bobs to music and falls asleep when you're away. |
+| **Characters** | Pick who lives next to the notch: a cat, dog, fox, bunny, bear, panda, frog or penguin. They follow your cursor, blink, bob to music and fall asleep when you're away. The character, time and temperature can each be turned off. |
 | **Themes** | *Obsidian* (black, the default), *Pearl* and *Adaptive*, which takes its colour from album artwork or your wallpaper. All text keeps a contrast of at least 4.5:1. |
 | **Accessibility** | Supports Reduce Motion (no springs or ripples), Reduce Transparency and Increase Contrast. Every control has a VoiceOver label. **⌃⌥Space** opens the island from the keyboard. |
 | **Languages** | English and Русский. Switching applies right away, with no relaunch. |
 
 <p align="center">
+  <img src="docs/mascots.png" width="460" alt="Characters"><br>
   <img src="docs/toast.png" width="620" alt="Live activity"><br>
   <img src="docs/weather.png" width="420" alt="Weather"> <img src="docs/command.png" width="420" alt="Command bar">
 </p>
