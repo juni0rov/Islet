@@ -43,7 +43,6 @@
 
 <p align="center">
   <img src="docs/mascots.png" width="460" alt="Characters"><br>
-  <img src="docs/toast.png" width="620" alt="Live activity"><br>
   <img src="docs/weather.png" width="420" alt="Weather"> <img src="docs/command.png" width="420" alt="Command bar">
 </p>
 
